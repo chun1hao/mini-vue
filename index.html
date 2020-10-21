@@ -11,6 +11,8 @@
     <h3 v-text="text"></h3>
     <input type="text" v-model="model">
     <h3>{{ model }}</h3>
+    <button v-on:click="handelClick">v-on:click</button>
+    <button @click="handelClick">@click</button>
 </div>
 <script src="./dep.js"></script>
 <script src="./watcher.js"></script>
@@ -24,6 +26,11 @@
             title: 'mini-vue',
             text: '测试下v-text指令',
             model: '测试下v-model'
+        },
+        methods: {
+            handelClick(){
+                this.msg = 'click 点击'
+            }
         }
     })
 </script>
