@@ -2,11 +2,24 @@ class Compiler{
     constructor(vm){
         this.vm = vm;
         this.el = vm.$el;
-        this.compile(this.el);
+        
+        
+        const fragment = this.compileFragment(this.el);
+        this.compile(fragment);
+        this.el.appendChild(fragment);
+    }
+    compileFragment(el){
+        // 避免回流重绘
+        const f = document.createDocumentFragment();
+        let firstChild;
+        while(firstChild = el.firstChild){
+            f.appendChild(firstChild)
+        }
+        return f;
     }
     // 处理文本节点和元素节点
-    compile(el){
-        let childNodes = el.childNodes;
+    compile(fragment){
+        let childNodes = fragment.childNodes;
         Array.from(childNodes).forEach(node=>{
             if(this.isTextNode(node)){
                 this.compileText(node)
@@ -22,34 +35,32 @@ class Compiler{
     // 处理元素节点和指令
     compileElement(node){
         Array.from(node.attributes).forEach(attr=>{
-            let attrName = attr.name;
+            let { name, value} = attr;
             if(this.isDirective(attrName)){
-                attrName = attrName.slice(2);
-                let key = attr.value
-                this.update(node, key, attrName);
+                // v-model v-text v-bind v-on:click
+                const [, directive] = name.split('-');
+                const [compileKey, eventName] = directive.split(':');
+                name = name.slice(2);
+                this[`${compileKey}Update`](node, value, eventName)
+            }else if(this.isEventName(name)){
+                // @ 方法
+                const [, eventName] = name.split('@'); 
+                this[`onUpdate`](node, value, eventName)
             }
         })
     }
-    update(node, key, attrName){
-        let fn = this[`${attrName}Updater`]
-        fn && fn.call(this, node, key, this.vm[key])
-    }
     // 处理v-text
-    textUpdater(node, key,value){
-        node.textContent = value;
-        new Watcher(this.vm, key, newVal=>{
-            node.textContent = newVal;
-        })
+    textUpdate(node, key){
+        node.textContent = this.vm[key]
+        new Watcher(this.vm, key, newVal=> node.textContent = newVal)
     }
     // v-model
-    modelUpdater(node, key, value){
-        node.value = value
-        new Watcher(this.vm, key, newVal=>{
-            node.value = newVal;
-        })
+   modelUpdate(node, key){
+        node.value = this.vm[key]
+        new Watcher(this.vm, key, newVal=> node.value = newVal)
         // 双向绑定
-        node.addEventListener('input', ()=>{
-            this.vm[key] = node.value
+        node.addEventListener('input', e=>{
+            this.vm[key] = e.target.value
         })
     }
     // 处理文本节点和差值表达式
@@ -66,6 +77,11 @@ class Compiler{
             })
         }
     }
+    // 处理事件
+    onUpdate(node, key, eventName){
+        const fn = this.vm.$options.methods[key];
+        node.addEventListener(eventName, fn.bind(this.vm), false)
+    }
     // 判断元素属性是否是指令
     isDirective(attrName){
         return attrName.startsWith('v-')
@@ -77,5 +93,9 @@ class Compiler{
     // 判断是否是元素节点
     isElementNode(node){
         return node.nodeType === 1
+    }
+    // 判断是否为 @ 事件
+    isEventName(name){
+        return name.startsWith('@')
     }
 }
