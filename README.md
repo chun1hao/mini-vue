@@ -1,5 +1,4 @@
 # vue
-##vue 相关
 
 [双向绑定](https://github.com/chun1hao/vue/tree/main/mini-vue)
 
