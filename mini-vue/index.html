@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div id="app">
+    <h1>{{ title }}</h1>
+    <h3 v-text="text"></h3>
+    <input type="text" v-model="model">
+    <h3>{{ model }}</h3>
+    <button v-on:click="handelClick">v-on:click</button>
+    <button @click="handelClick">@click</button>
+</div>
+<script src="./dep.js"></script>
+<script src="./watcher.js"></script>
+<script src="./observer.js"></script>
+<script src="./compiler.js"></script>
+<script src="./vue.js"></script>
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            title: 'mini-vue',
+            text: '测试下v-text指令',
+            model: '测试下v-model'
+        },
+        methods: {
+            handelClick(){
+                this.msg = 'click 点击'
+            }
+        }
+    })
+</script>
+</body>
+</html>
