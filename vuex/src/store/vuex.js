@@ -38,7 +38,6 @@ function install(_Vue){
     // store 执行时，就有了 vue
     // 所以 vue.use 必须在 new store 之前
     Vue = _Vue;
-    console.log(Vue)
     _Vue.mixin({
         beforeCreate(){
             // 只有root 才有store
