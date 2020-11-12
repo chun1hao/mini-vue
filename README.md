@@ -1,8 +1,8 @@
 # vue
 ##vue 相关
 
-双向绑定
+[双向绑定](https://github.com/chun1hao/vue/tree/main/mini-vue)
 
-vuex
+[vuex](https://github.com/chun1hao/MyBlog/issues/2)
 
-vue-router
+[xue-router](https://github.com/chun1hao/MyBlog/issues/2)
