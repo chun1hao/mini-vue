@@ -6,8 +6,10 @@ class Store{
             data: options.state
         });
 
-        this.mutations = options.mutations  || {};
-        this.actions = options.actions || {};
+        this.mutations = options.mutations;
+        this.actions = options.actions;
+
+        this.handleGetters(options.getters);
     }
     commit =  (type, arg)=> {
         this.mutations[type](this.state, arg)
@@ -18,11 +20,15 @@ class Store{
             state: this.state
         }, arg)
     }
+    // getter 实现
     handleGetters(getters){
+        // 类似computed，代理一个getter，挂载在store.getters上面
         this.getters = {};
         Object.keys(getters).forEach(key => {
             Object.defineProperty(this.getters, key, {
-                
+                get: ()=>{
+                    return getters[key](this.state)
+                }
             })
         })
     }

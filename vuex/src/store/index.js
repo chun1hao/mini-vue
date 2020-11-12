@@ -7,6 +7,11 @@ export default new Vuex.Store({
     state: {
         count: 0
     },
+    getters:{
+        dobuleClickNum(state){
+          return state.count * 2
+        }
+    },
     mutations: {
         increment(state, n=1) {
             state.count += n
