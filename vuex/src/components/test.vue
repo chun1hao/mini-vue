@@ -9,9 +9,6 @@
 
 <script>
 export default {
-	created(){
-		console.log(this.$store)
-	},
 	methods: {
 		add(){
 			this.$store.commit('increment')
