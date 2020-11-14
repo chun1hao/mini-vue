@@ -2,8 +2,8 @@
 
 设计思路：
 1. vue-router 包含两个组件 
-    router-link：相当于禁用了默认事件的 a 标签，点击改变路由
-    router-view：占位
+- router-link：相当于禁用了默认事件的 a 标签，点击改变路由
+- router-view：占位
 2. 监听路由（hash pushState）变化
 3. 在传入的路由表（router-map）中进行查找，找到需要加载得到组件
 4. 将找到的组件塞到 router-view 里面
