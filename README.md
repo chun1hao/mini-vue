@@ -4,4 +4,4 @@
 
 [vuex](https://github.com/chun1hao/vue/tree/main/vuex)
 
-[xue-router](https://github.com/chun1hao/vue/tree/main/vue-router)
+[vue-router](https://github.com/chun1hao/vue/tree/main/vue-router)
