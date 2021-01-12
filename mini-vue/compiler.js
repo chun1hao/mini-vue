@@ -1,8 +1,7 @@
 class Compiler{
     constructor(vm){
         this.vm = vm;
-        this.el = vm.$el;
-        
+        this.el = vm.$el;     
         
         const fragment = this.compileFragment(this.el);
         this.compile(fragment);
